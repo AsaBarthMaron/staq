@@ -30,7 +30,7 @@ dO.Name = chNames.do{odorChannel + 1};
 % impulse = [ones((0.5 * niIO.Rate),1)*1; zeros((0.5 * niIO.Rate),1)];
 carrier1out = odorSignal * 5;
 carrier2out = odorSignal * 5;
-odorValveOut = [zeros(0.5*sampRate,1); ones((trialLength-1) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
+odorValveOut = [ones((trialLength-0.5) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
 % odorValveOut = [zeros(0.5*sampRate,1); zeros((trialLength-1) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
 niIO.queueOutputData([carrier1out carrier2out odorValveOut]); 
 in = niIO.startForeground; 
