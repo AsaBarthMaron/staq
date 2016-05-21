@@ -44,7 +44,7 @@ odorBlock(carrier1out == 0) = NaN;
 odorBlock = ((odorBlock/5) * max(patchTrace)) + (0.05 * max(patchTrace));
 
 clf
-plot((1/niIO.Rate):(1/niIO.Rate):trialLength, patchTrace)
+plot((1/niIO.Rate):(1/niIO.Rate):trialLength, (patchTrace*10)+60.6)
 hold on
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
 axis tight

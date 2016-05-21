@@ -1,13 +1,14 @@
+function random_interleaved_trials(olfCh, nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-exp.lineName  = 'wild_type';
-exp.name = 'test';
+exp.lineName  = 'Non-green';
+exp.name = 'PO_2';
 exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
-exp.folderName    = 'Z:\Data\recordings\antennal_LFP';
+exp.folderName    = 'Z:\Data\recordings\LN_dynamics';
 fullDateTime        = datestr(now,30);
 exp.date             = [fullDateTime(1:4), '-', fullDateTime(5:6), '-',...
                         fullDateTime(7:8)];
@@ -16,7 +17,7 @@ matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
 if ~exist(exp.saveDir,'dir')
     mkdir(exp.saveDir);
 end
-if exist(fullfile(exp.saveDir, matSaveFile))
+while exist(fullfile(exp.saveDir, matSaveFile))
     exp.number = exp.number + 1;
     matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
 end
@@ -24,9 +25,9 @@ end
 sampRate = 1e4; 
 odorTrainDuration = 8; % Duration of odor pulse train in s
 trialDuration = 15;
-olfCh = 0;           % Indexing for digital outputs starts at 0. NOTE: MUST EDIT get_channel_names.m
+% olfCh = 0;           % Indexing for digital outputs starts at 0. NOTE: MUST EDIT get_channel_names.m
 nOlfCh = length(olfCh);
-nReps = 1;
+% nReps = 1;
 
 impulse{1} = [ones((0.02 * sampRate),1)*1; zeros((0.08 * sampRate),1)];
 impulse{2} = [ones((0.2 * sampRate),1)*1; zeros((0.38 * sampRate),1)];
@@ -56,8 +57,8 @@ for iTrial = 1:length(randTrials)
     [spacer_data(:,:,iTrial), spacer_daqInfo(iTrial)] = spacer_trial(5, olfCh(iOdor),sampRate);
         
         
-%     [data(:,:,iTrial), daqInfo(iTrial)] = odor_trial(odorSignal(:, pulseType), olfCh(iOdor), sampRate);
-    [data(:,:,iTrial), daqInfo(iTrial)] = odor_trial(odorSignal(:, 3), olfCh(iOdor), sampRate);
+    [data(:,:,iTrial), daqInfo(iTrial)] = odor_trial(odorSignal(:, pulseType), olfCh(iOdor), sampRate);
+%     [data(:,:,iTrial), daqInfo(iTrial)] = odor_trial(odorSignal(:, 3), olfCh(iOdor), sampRate);
     disp(['Trial ' num2str(iTrial) ' of ' num2str(length(randTrials))])
     
 
@@ -65,3 +66,4 @@ for iTrial = 1:length(randTrials)
         save(fullfile(exp.saveDir, matSaveFile))
     end
 end
+save(fullfile(exp.saveDir, matSaveFile), '-v7.3')

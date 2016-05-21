@@ -1,9 +1,9 @@
 % label = 'Vclamp_bath';
 % label = 'Vclamp_seal';
-% label = 'Vclamp_cell';
+label = 'Vclamp_cell';
 % label = 'Iclamp_seal';
 
-exp.lineName  = 'GMR-70A09-gal4';
+exp.lineName  = 'GMR-46E11-gal4';
 exp.number = '1'; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
@@ -20,5 +20,5 @@ end
 
 trialLength = 5;
 sampRate = 1e4;
-[spacer_data, spacer_daqInfo] = spacer_trial(5, sampRate);
+[spacer_data, spacer_daqInfo] = spacer_trial(5, 0, sampRate);
 save(fullfile(exp.saveDir, matSaveFile))

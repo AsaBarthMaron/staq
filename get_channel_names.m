@@ -9,9 +9,9 @@ names.ai{6} = 'Mode';            % Amplifier mode
 
 names.do{1} = 'blank';
 names.do{2} = 'blank';
-names.do{3} = 'blank';
+names.do{3} = 'paraffin oil 1';
 names.do{4} = '2-heptanone, 10^-^8';
 names.do{5} = '2-heptanone, 10^-^6';
 names.do{6} = '2-heptanone, 10^-^4';
 names.do{7} = '2-heptanone, 10^-^2';
-names.do{8} = 'blank';
+names.do{8} = 'paraffin oil 2';
