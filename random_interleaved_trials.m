@@ -2,8 +2,11 @@ function random_interleaved_trials(olfCh, nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-exp.lineName  = 'Non-green';
-exp.name = 'PO_2';
+exp.lineName  = 'GMR-46E11-gal4_cell2';
+exp.name = '2-hep_10^-2';
+% exp.name = 'no_odor_valve';
+% exp.name = 'empty_vial';
+% exp.name = 'PO';
 exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
@@ -24,7 +27,7 @@ end
 %%
 sampRate = 1e4; 
 odorTrainDuration = 8; % Duration of odor pulse train in s
-trialDuration = 15;
+% trialDuration = 15;
 % olfCh = 0;           % Indexing for digital outputs starts at 0. NOTE: MUST EDIT get_channel_names.m
 nOlfCh = length(olfCh);
 % nReps = 1;
@@ -37,9 +40,9 @@ impulse{3} = [ones((2 * sampRate),1)*1; zeros((1.58 * sampRate),1)];
 % impulse{2} = [zeros((0.2 * sampRate),1)*1; zeros((0.38 * sampRate),1)];
 % impulse{3} = [zeros((2 * sampRate),1)*1; zeros((1.58 * sampRate),1)];
 
-odorSignal(:,1) = [zeros(2 * sampRate, 1); repmat(impulse{1}, 100, 1); zeros(3 * sampRate, 1)];
-odorSignal(:,2) = [zeros(2 * sampRate, 1);  repmat(impulse{2}, 18,1); zeros(2.56 * sampRate, 1)];
-odorSignal(:,3) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 3, 1); zeros(ceil(2.26 * sampRate), 1)];
+odorSignal(:,1) = [zeros(2 * sampRate, 1); repmat(impulse{1}, 60, 1); zeros(3 * sampRate, 1)];
+odorSignal(:,2) = [zeros(2 * sampRate, 1);  repmat(impulse{2}, 10,1); zeros(3.2 * sampRate, 1)];
+odorSignal(:,3) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 2, 1); zeros(ceil(1.84 * sampRate), 1)];
 
 conditions = 1:(nOlfCh * size(odorSignal, 2)); % Gives each condition type a unique ID
 conditions = repmat(conditions',nReps,1); % Repeats those IDs by the numebr of trials

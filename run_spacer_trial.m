@@ -1,9 +1,9 @@
 % label = 'Vclamp_bath';
 % label = 'Vclamp_seal';
-label = 'Vclamp_cell';
+% label = 'Vclamp_cell';
 % label = 'Iclamp_seal';
 
-exp.lineName  = 'GMR-46E11-gal4';
+exp.lineName  = 'GMR-46E11-gal4_cell2';
 exp.number = '1'; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
