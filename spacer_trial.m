@@ -13,7 +13,7 @@ devID = 'Dev1';
 niIO.Rate = sampRate;           % Sampling rate in Hz
 niIO.DurationInSeconds = trialLength;
 
-aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6],'Voltage');
+aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6 7],'Voltage');
 chNames = get_channel_names;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai{iAI};

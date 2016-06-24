@@ -6,8 +6,9 @@ names.ai{3} = 'Scaled output';
 names.ai{4} = 'Gain';            % Gain setting
 names.ai{5} = 'Frequency';       % Filter setting
 names.ai{6} = 'Mode';            % Amplifier mode
+names.ai{7} = 'Stimulus output';
 
-names.do{1} = 'blank';
+names.do{1} = '590-605nm light';
 names.do{2} = 'blank';
 names.do{3} = 'paraffin oil 1';
 names.do{4} = '2-heptanone, 10^-^8';

@@ -1,6 +1,6 @@
 % label = 'Vclamp_bath';
-label = 'Vclamp_seal';
-% label = 'Vclamp_cell';
+% label = 'Vclamp_seal';
+label = 'Vclamp_cell';
 % label = 'Iclamp_seal';
 % label = 'Iclamp_whole_cell';
 
