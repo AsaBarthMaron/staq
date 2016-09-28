@@ -19,10 +19,17 @@ for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai{iAI};
 end
 
-dO = niIO.addDigitalChannel(devID, {['Port0/Line' num2str(odorChannel)]}, 'OutputOnly'); % Signal for valve 3 (odor stream)
-dO.Name = chNames.do{odorChannel + 1};
-odorValveOut = [ones(trialLength * niIO.Rate, 1)];
-niIO.queueOutputData([odorValveOut]); 
+aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for external command
+aO.Name = 'External command';
+
+% commandMag = 0;
+commandMag = -0.004 * 5; % Volts/pA (given 100x gain) * pA
+extCommand = [zeros(0.5*sampRate,1); ones(0.5*sampRate, 1); zeros((trialLength-1) *sampRate,1)];
+extCommand = extCommand * commandMag;
+% dO = niIO.addDigitalChannel(devID, {['Port0/Line' num2str(odorChannel)]}, 'OutputOnly'); % Signal for valve 3 (odor stream)
+% dO.Name = chNames.do{odorChannel + 1};
+% odorValveOut = [ones(trialLength * niIO.Rate, 1)];
+niIO.queueOutputData(extCommand); 
 
 in = niIO.startForeground; 
 

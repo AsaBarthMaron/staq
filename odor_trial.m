@@ -19,7 +19,7 @@ for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai{iAI};
 end
 aO(1) = niIO.addAnalogOutputChannel('Dev1','ao0', 'Voltage'); % Signal for valve1 (odor carrier)
-aO(2) = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for valve2 (clean carrier)
+aO(2) = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for external command
 % dO = niIO.addDigitalChannel(devID, {['Port0/Line' num2str(odorChannel)]}, 'OutputOnly'); % Signal for valve 3 (odor stream)
 aO(1).Name = 'Odor carrier';
 aO(2).Name = 'External command';
@@ -29,7 +29,8 @@ aO(2).Name = 'External command';
 % impulse = ones(6 * niIO.Rate,1);
 % impulse = [ones((0.5 * niIO.Rate),1)*1; zeros((0.5 * niIO.Rate),1)];
 carrier1out = odorSignal * 5;
-commandMag = - 0.050;
+% commandMag = - 0.050;
+commandMag = 0;
 extCommand = [zeros(0.5*sampRate,1); ones(0.5*sampRate, 1); zeros((trialLength-1) *sampRate,1)];
 extCommand = extCommand * commandMag;
 % odorValveOut = [ones((trialLength-0.5) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
@@ -46,7 +47,7 @@ odorBlock(carrier1out == 0) = NaN;
 odorBlock = ((odorBlock/5) * max(patchTrace)) + (0.05 * max(patchTrace));
 
 clf
-plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace/50) * 1e3))
+plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace/100) * 1e3))
 % plot((1/niIO.Rate):(1/niIO.Rate):trialLength, patchTrace)
 hold on
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
@@ -57,7 +58,7 @@ plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
 axis tight
 xlabel('Seconds')
 ylabel('Membrane voltage (Vm)')
-ylabel('pA')
+% ylabel('pA')
 title(chNames.do{odorChannel + 1})
 
 daqInfo.daqRate     = niIO.Rate;

@@ -3,8 +3,8 @@ function plot_odor_trial(h, trace, stim, sampRate, sub)
     stim = (stim - min(stim)) / max(stim);
     stim(stim < 0.5) = NaN;
     
-%     stim = (stim * max(trace)) + (0.05 * max(trace));
-    stim =  stim * 2.5 *  mean(abs(trace));
+    stim = (stim * max(trace)) + (0.05 * max(trace));
+%     stim =  (stim  *  mean(trace)) + (1 * (max(trace) - min(trace)));
     
     figure(h)
 %     clf
