@@ -17,39 +17,40 @@ aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6 7],'Voltage');
 chNames = get_channel_names;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai{iAI};
+    aI(iAI).TerminalConfig = 'SingleEnded';
 end
-aO(1) = niIO.addAnalogOutputChannel('Dev1','ao0', 'Voltage'); % Signal for valve1 (odor carrier)
-aO(2) = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for external command
-% dO = niIO.addDigitalChannel(devID, {['Port0/Line' num2str(odorChannel)]}, 'OutputOnly'); % Signal for valve 3 (odor stream)
-aO(1).Name = 'Odor carrier';
-aO(2).Name = 'External command';
-% dO.Name = chNames.do{odorChannel + 1};
+% aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for valve1 (odor carrier)
+% aO.Name = 'Shutter Signal';
+dO = niIO.addDigitalChannel(devID, {['Port0/Line0']}, 'OutputOnly'); % Signal for valve 3 (odor stream)
+dO.Name = 'Odor valve cmd';
+
+% shutterSignal = [zeros((2 * sampRate),1); ones((0.5 * sampRate),1)*5; zeros((4.5 * sampRate),1)];
+% shutterSignal = [zeros((3 * sampRate),1); ones((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
+% shutterSignal = [zeros((3 * sampRate),1); zeros((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
 
 
-% impulse = ones(6 * niIO.Rate,1);
-% impulse = [ones((0.5 * niIO.Rate),1)*1; zeros((0.5 * niIO.Rate),1)];
-carrier1out = odorSignal * 5;
-% commandMag = - 0.050;
-commandMag = 0;
-extCommand = [zeros(0.5*sampRate,1); ones(0.5*sampRate, 1); zeros((trialLength-1) *sampRate,1)];
-extCommand = extCommand * commandMag;
-% odorValveOut = [ones((trialLength-0.5) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
-% odorValveOut = [zeros(0.5*sampRate,1); zeros((trialLength-1) * niIO.Rate, 1); zeros(0.5*sampRate,1)];
-niIO.queueOutputData([carrier1out extCommand]); 
+
+niIO.queueOutputData(odorSignal);
+% niIO.queueOutputData([odorSignal*5]); 
 in = niIO.startForeground; 
 %--------------------------------------------------------------------------
 %-Plot data--------------------------------------------
 %--------------------------------------------------------------------------
 
 patchTrace = in(:, 3);
-odorBlock = carrier1out;
-odorBlock(carrier1out == 0) = NaN;
+odorBlock = odorSignal;
+odorBlock(odorSignal == 0) = NaN;
 odorBlock = ((odorBlock/5) * max(patchTrace)) + (0.05 * max(patchTrace));
 
 clf
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace/100) * 1e3))
-% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, patchTrace)
+% a = ((patchTrace/100)/510e6);
+
+% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, a)
+% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, patchTrace/0.002)
 hold on
+% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, medfilt1(patchTrace/0.002, 500))
+% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, medfilt1(a, 500))
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
 % clf
 % plot(downsample((patchTrace*10), 10))

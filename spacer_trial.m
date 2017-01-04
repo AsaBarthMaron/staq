@@ -17,13 +17,15 @@ aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6 7],'Voltage');
 chNames = get_channel_names;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai{iAI};
+    aI(iAI).TerminalConfig = 'SingleEnded';
 end
 
-aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for external command
+aO = niIO.addAnalogOutputChannel('Dev1','ao0', 'Voltage'); % Signal for external command
 aO.Name = 'External command';
 
-% commandMag = 0;
-commandMag = -0.004 * 5; % Volts/pA (given 100x gain) * pA
+pA = -15;
+% commandMag = 0; 
+commandMag = 0.5e-3 * pA; % Volts/pA (given 100x gain) * pA
 extCommand = [zeros(0.5*sampRate,1); ones(0.5*sampRate, 1); zeros((trialLength-1) *sampRate,1)];
 extCommand = extCommand * commandMag;
 % dO = niIO.addDigitalChannel(devID, {['Port0/Line' num2str(odorChannel)]}, 'OutputOnly'); % Signal for valve 3 (odor stream)
@@ -33,10 +35,12 @@ niIO.queueOutputData(extCommand);
 
 in = niIO.startForeground; 
 
+%% Calculate input resistance
+Rinput = ((median(in(:,3)) - mean(in(0.75*sampRate:(1*sampRate)-1,3))) /100)/(abs(pA) * 1e-12);
 %--------------------------------------------------------------------------
 %-Plot data--------------------------------------------
 %--------------------------------------------------------------------------
-
+disp(['Rinput: ' num2str(Rinput / 1e6) ' MOhms'])
 daqInfo.daqRate     = niIO.Rate;
 daqInfo.daqChIDs    = {niIO.Channels(:).ID};
 daqInfo.daqChNames  = {niIO.Channels(:).Name};
