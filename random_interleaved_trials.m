@@ -6,10 +6,10 @@ exp.lineName  = 'NP1227-gal4';
 % exp.name = '1.5ms_pulse_500ms_ipi_vclamp_+CGP';
 % exp.name = 'no_odor_valve';
 % exp.name = 'empty_vial';
-exp.name = '2-hep_10^-8_Vclamp';
-% exp.name = 'PO_2';
+exp.name = '2-hep_10^-4_2';
+% exp.name = 'PO';
 % exp.name = '500ms_shutter_pulse_no_ND25_hyperpolarized';
-exp.number = 1; % Number per day
+exp.number = 2; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ for iTrial = 1:length(randTrials)
     % the (hard coded) number of odor pulse types.
     [iOdor, pulseType] = ind2sub([length(olfCh), 3], randTrials(iTrial));
     
-    [spacer_data(:,:,iTrial), spacer_daqInfo(iTrial)] = spacer_trial(iti, olfCh(iOdor),sampRate);
+    [spacer_data(:,:,iTrial), spacer_daqInfo(iTrial)] = spacer_trial(iti, 0, sampRate);
 %     disp(accessResistanceCalc(spacer_data(:,3,iTrial)/10, 10e3) )
         
     [data(:,:,iTrial), daqInfo(iTrial)] = odor_trial(odorSignal(:, pulseType), olfCh(iOdor), sampRate);

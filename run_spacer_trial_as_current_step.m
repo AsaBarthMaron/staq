@@ -1,14 +1,13 @@
 clear
 % label = 'Vclamp_bath';
 % label = 'Vclamp_seal';
-label = 'Vclamp_seal_spikes';
+% label = 'Vclamp_seal_spikes';
 % label = 'Vclamp_cell';
-% 
+
 
 
 % label = 'Iclamp_seal';
-% label = 'Iclamp_whole_cell_spike_rinput_step';
-% label = 'Iclamp_zero';
+label = 'Iclamp_whole_cell';
 
 
 exp.lineName  = 'NP1227-gal4';
@@ -35,9 +34,8 @@ end
 
 pA = -15;
 [spacer_data, spacer_daqInfo] = spacer_trial(5, pA, sampRate);
-save(fullfile(exp.saveDir, matSaveFile))
+% save(fullfile(exp.saveDir, matSaveFile))
 clf
-plot(scale_200B_data(spacer_data))
-% plot((spacer_data(:,3) /100 * 1e3))
+plot((spacer_data(:,3) /100 * 1e3))
 pipetteResistanceCalc(spacer_data(:,3)) 
 % accessResistanceCalc(spacer_data(:,3)/10, 10e3)  

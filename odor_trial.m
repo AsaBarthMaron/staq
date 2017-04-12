@@ -58,8 +58,8 @@ plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
 % plot(downsample(odorBlock, 10), 'k', 'linewidth', 5);
 axis tight
 xlabel('Seconds')
-ylabel('Membrane voltage (Vm)')
-% ylabel('pA')
+% ylabel('Membrane voltage (Vm)')
+ylabel('pA')
 title(chNames.do{odorChannel + 1})
 
 daqInfo.daqRate     = niIO.Rate;
