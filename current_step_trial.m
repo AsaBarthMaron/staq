@@ -15,9 +15,9 @@ trialLength = (length(extCommand)/sampRate);
 niIO.DurationInSeconds = trialLength;
 
 aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6 7],'Voltage');
-chNames = get_channel_names;
+[chNames, ~] = get_channel_identities;
 for iAI = 1:length(chNames.ai)
-    aI(iAI).Name = chNames.ai{iAI};
+    aI(iAI).Name = chNames.ai(iAI);
     aI(iAI).TerminalConfig = 'SingleEnded';
 end
 

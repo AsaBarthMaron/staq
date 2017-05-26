@@ -9,7 +9,7 @@ exp.lineName  = 'NP1227-gal4';
 exp.name = '2-hep_10^-4_2';
 % exp.name = 'PO';
 % exp.name = '500ms_shutter_pulse_no_ND25_hyperpolarized';
-exp.number = 2; % Number per day
+exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
@@ -70,6 +70,8 @@ randTrials = repmat([1 2 3], 1, nReps);
 % randTrials = randsample(conditions, length(conditions)); % Randomizes conditions
 % load('Z:\Data\recordings\LN_dynamics\NP1227-gal4\2016-12-17\2016-12-17_2-hep_10^-1_randTrials.mat');
 % daqInfo = struct;
+
+% [access_test, access_daqInfo] = spacer_trial(iti, 0, sampRate * 10);
 
 for iTrial = 1:length(randTrials)
     

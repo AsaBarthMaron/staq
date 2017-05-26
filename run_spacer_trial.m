@@ -1,13 +1,13 @@
 clear
 % label = 'Vclamp_bath';
 % label = 'Vclamp_seal';
-label = 'Vclamp_seal_spikes';
+% label = 'Vclamp_seal_spikes';
 % label = 'Vclamp_cell';
 % 
 
 
 % label = 'Iclamp_seal';
-% label = 'Iclamp_whole_cell_spike_rinput_step';
+label = 'Iclamp_whole_cell_spike_rinput_step';
 % label = 'Iclamp_zero';
 
 
@@ -33,7 +33,7 @@ else
     sampRate = 1e4;
 end
 
-pA = -15;
+pA = -10;
 [spacer_data, spacer_daqInfo] = spacer_trial(5, pA, sampRate);
 save(fullfile(exp.saveDir, matSaveFile))
 clf
