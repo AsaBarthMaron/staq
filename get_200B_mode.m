@@ -21,13 +21,23 @@ if (mode == 0)
 %     error('Provide an input')
 end
 
-modeVal = round(median(mode(:)));
-if modeVal == modeCh
-    mode = 'V-clamp';
-    units = 'pA';
-    sciUnits = 1e-12;
-elseif modeVal <= 3
-    mode = 'I-clamp';
-    units = 'mV';
-    sciUnits = 1e-3;
+if modeCh > 1
+    mode = permute(mode, [1 3 2]);
+    mode = reshape(mode, size(mode, 1) * size(mode, 2), size(mode, 3));
+    modeVal = round(median(mode));
+else
+    modeVal = round(median(mode(:)));
+end
+clear mode
+
+for iMode = 1:length(modeVal)
+    if modeVal(iMode) == 6
+        mode(iMode,:) = 'V-clamp';
+        units(iMode,:) = 'pA';
+        sciUnits(iMode) = 1e-12;
+    elseif modeVal(iMode) <= 3
+        mode(iMode,:) = 'I-clamp';
+        units(iMode,:) = 'mV';
+        sciUnits(iMode) = 1e-3;
+    end
 end

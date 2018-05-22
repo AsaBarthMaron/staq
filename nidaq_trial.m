@@ -1,13 +1,36 @@
-function [in, daqInfo] = odor_trial(odorSignal, odorChannel,sampRate)
+function [in, daqInfo] = nidaq_trial(varargin)
+odorSignal, odorChannel, sampRate)
 % Quick and dirty code to acquire patch clamp data while presenting odor
 % stimulations
+function [scaledData, units, sciUnits] = scale_200B_data(varargin)
+% Takes data from the 200B amplifer and scales it to common units (mV, pA)
+% Data can be in two formats. First is passed in as an M x N x P array, with M 
+% being trial length (in samples), N being various DAC inputs, and P being 
+% trials. In this case scaled input is #3, gain is input #4 and mode is input #6. 
+% The other format is M x P, where the data is just scaled output, while
+% gain and mode arrays are passed in separately.
 
+p = inputParser;
+p.KeepUnmatched = false;
+p.StructExpand = false;
+p.CaseSensitive = false;
+
+p.addRequired('trialLength');
+p.addRequired('sampRate');
+p.addRequired('nChannels')
+p.addRequired('trialType')
+p.addOptional('odorSignal',0);
+p.addOptional('odorChannel',0);
+
+p.parse(varargin{:});
+data = p.Results.data;
+gain = p.Results.gain;
+mode = p.Results.mode;
 trialLength = (length(odorSignal)/sampRate);
 %--------------------------------------------------------------------------
 %-Base daq devices and channels--------------------------------------------
 %--------------------------------------------------------------------------
 daqreset
-
 
 niIO = daq.createSession('ni');
 devID = 'Dev1';
@@ -17,18 +40,11 @@ aI = niIO.addAnalogInputChannel(devID,[1:7 9:15],'Voltage');
 [chNames, ~] = get_channel_identities;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai(iAI);
-    aI(iAI).TerminalConfig = 'SingleEnded';
+    aI(iAI).TerminalConfig = 'Sin gleEnded';
 end
-% aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for valve1 (odor carrier)
-% aO.Name = 'Shutter Signal';
+
 dO = niIO.addDigitalChannel(devID, {['Port0/Line0']}, 'OutputOnly'); % Signal for valve 3 (odor stream)
 dO.Name = 'Odor valve cmd';
-
-% shutterSignal = [zeros((2 * sampRate),1); ones((0.5 * sampRate),1)*5; zeros((4.5 * sampRate),1)];
-% shutterSignal = [zeros((3 * sampRate),1); ones((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
-% shutterSignal = [zeros((3 * sampRate),1); zeros((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
-
-
 
 niIO.queueOutputData(odorSignal);
 % niIO.queueOutputData([odorSignal*5]); 

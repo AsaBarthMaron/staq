@@ -1,9 +1,9 @@
-function run_current_step_trial(nReps)
+function run_current_stim_trial(nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-exp.lineName  = 'NP1227-gal4';
-exp.name = 'current_steps';
+exp.lineName  = 'GMR59C05-gal4';
+exp.name = 'current_steps_right_only_hyp_2';
 exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
@@ -22,22 +22,22 @@ while exist(fullfile(exp.saveDir, matSaveFile))
     matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
 end
 %%
-pA = 30;
+pA = 7;
 sampRate = 1e4; 
 stimTrainDuration = 3; % Duration of odor pulse train in s
-trialDuration = 8;
+trialDuration = 15;
 
 % commandMag = 1; % Volts/pA (given 100x gain) * pA
 commandMag = 0.5e-3 * pA; % Volts/pA (given 100x gain) * pA
-extCommand(:,1) = [zeros(1*sampRate,1); ones(3*sampRate, 1); zeros(4 *sampRate,1)];
-extCommand(:,2) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * -1; zeros(4 *sampRate,1)];
-extCommand(:,3) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * 0.5; zeros(4 *sampRate,1)];
-extCommand(:,4) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * -0.5; zeros(4 *sampRate,1)];
+extCommand(:,1) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * -1; zeros(4 *sampRate,1)];
+% extCommand(:,2) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * -1; zeros(4 *sampRate,1)];
+% extCommand(:,3) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * 0.5; zeros(4 *sampRate,1)];
+% extCommand(:,4) = [zeros(1*sampRate,1); ones(3*sampRate, 1) * -0.5; zeros(4 *sampRate,1)];
 
 extCommand = extCommand * commandMag;
 
 % trialOrder = repmat([1 2 3 4], 1, nReps);
-trialOrder = repmat([1 2 3 4], 1, nReps);
+trialOrder = repmat([1], 1, nReps);
 
 
 for iTrial = 1:length(trialOrder)

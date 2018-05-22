@@ -13,7 +13,7 @@ niIO = daq.createSession('ni');
 devID = 'Dev1';
 niIO.Rate = sampRate;           % Sampling rate in Hz
 niIO.DurationInSeconds = trialLength;
-aI = niIO.addAnalogInputChannel(devID,[1 2 3 4 5 6 7],'Voltage');
+aI = niIO.addAnalogInputChannel(devID,[1:15],'Voltage');
 [chNames, ~] = get_channel_identities;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai(iAI);
@@ -37,13 +37,17 @@ in = niIO.startForeground;
 %-Plot data--------------------------------------------
 %--------------------------------------------------------------------------
 
-patchTrace = in(:, 3);
+patchTrace(:,1) = in(:, 3);
+patchTrace(:,2) = in(:, 11);
 odorBlock = odorSignal;
 odorBlock(odorSignal == 0) = NaN;
-odorBlock = ((odorBlock/5) * max(patchTrace)) + (0.05 * max(patchTrace));
+odorBlock = ((odorBlock/5) * max(patchTrace(:,1))) + (0.05 * max(patchTrace(:,1)));
 
 clf
-plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace/100) * 1e3))
+plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,1)/100) * 1e3))
+hold on
+plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,2)/100) * 1e3))
+
 % a = ((patchTrace/100)/510e6);
 
 % plot((1/niIO.Rate):(1/niIO.Rate):trialLength, a)
@@ -57,6 +61,7 @@ plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
 % hold on
 % plot(downsample(odorBlock, 10), 'k', 'linewidth', 5);
 axis tight
+% axis([0 11 -60 0 ])
 xlabel('Seconds')
 ylabel('Membrane voltage (Vm)')
 % ylabel('pA')
