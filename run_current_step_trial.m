@@ -2,13 +2,13 @@ function run_current_step_trial(nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-exp.lineName  = 'NP1227-gal4';
+exp.lineName  = 'R24C12-gal4_X_20x-UAS-GtACR2_unlabeled';
 exp.name = 'current_steps';
 exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
-exp.folderName    = 'Z:\Data\recordings\LN_dynamics\';
+exp.folderName    = 'Z:\Data\recordings\optogenetic_LN_stim\';
 fullDateTime        = datestr(now,30);
 exp.date             = [fullDateTime(1:4), '-', fullDateTime(5:6), '-',...
                         fullDateTime(7:8)];
@@ -22,7 +22,7 @@ while exist(fullfile(exp.saveDir, matSaveFile))
     matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
 end
 %%
-pA = 30;
+pA = 20;
 sampRate = 1e4; 
 stimTrainDuration = 3; % Duration of odor pulse train in s
 trialDuration = 8;

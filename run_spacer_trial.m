@@ -7,17 +7,17 @@ clear
 
 
 % label = 'Iclamp_seal';
-label = 'Iclamp_whole_cell_current_step';
-% label = 'Iclamp_fast';
+% label = 'Iclamp_whole_cell_current_step';
+label = 'Iclamp_fast';
 % label = 'Iclamp_zero';
 
 
-exp.lineName  = 'NP1227-gal4';
+exp.lineName  = 'R24C12-gal4_X_20x-UAS-GtACR1_unlabeled';
 exp.number = '1'; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
-exp.folderName    = 'Z:\Data\recordings\LN_dynamics\';
+exp.folderName    = 'Z:\Data\recordings\optogenetic_LN_stim\';
 fullDateTime        = datestr(now,30);
 exp.date             = [fullDateTime(1:4), '-', fullDateTime(5:6), '-',...
                        fullDateTime(7:8)];
@@ -34,14 +34,14 @@ else
     sampRate = 1e4;
 end
 
-pA = -15;
+pA = -20;
 [spacer_data, spacer_daqInfo] = spacer_trial(trialLength, pA, sampRate);
 save(fullfile(exp.saveDir, matSaveFile))
 clf
 % plot(scale_200B_data(spacer_data))
 plot(spacer_data(:,3) / 100 * 1e3)
 hold on
-plot(spacer_data(:,11) / 100 * 1e3)
+% plot(spacer_data(:,11) / 100 * 1e3)
 % plot(scale_200B_data(spacer_data(:,9:15)))
 % plot((spacer_data(:,3) /100 * 1e3))
 pipetteResistanceCalc(spacer_data(:,3)) 

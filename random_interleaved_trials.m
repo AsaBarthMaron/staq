@@ -2,18 +2,22 @@ function random_interleaved_trials(olfCh, nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-exp.lineName  = 'NP1227-gal4';
+exp.lineName  = 'R24C12-gal4_X_20x-UAS-GtACR1_unlabeled';
 % exp.name = '1.5ms_pulse_500ms_ipi_vclamp_+CGP';
 % exp.name = 'no_odor_valve';
 % exp.name = 'empty_vial';
-exp.name = '2-hep_10^-2_2';
-% exp.name = 'PO';
-% exp.name = '500ms_shutter_pulse_no_ND25_hyperpolarized';
+% exp.name = '2-hep_10^-2_2';
+% exp.name = '2-hep_10^-2_2.5s_pulse';
+% exp.name = '500ms_shutter_pulse_ND25_ND25_2.5s_concurrent_500m_odor_2_hep_10-2';
+exp.name = '2.5s_2-hep_10^-2_1uM_TTX_depol';
+% exp.name = '2.5s_2-hep_10^-2_and_shutter_pulse_no_NDs';
+% exp.name = '2.5s_shutter_pulse_no_NDs_hyp';
+% exp.name = '500ms_odor_pulse';
 exp.number = 1; % Number per day
 %--------------------------------------------------------------------------
 %-Set up filepaths for logging---------------------------------------------
 %--------------------------------------------------------------------------
-exp.folderName    = 'Z:\Data\recordings\LN_dynamics\';
+exp.folderName    = 'Z:\Data\recordings\optogenetic_LN_stim\';
 fullDateTime        = datestr(now,30);
 exp.date             = [fullDateTime(1:4), '-', fullDateTime(5:6), '-',...
                         fullDateTime(7:8)];
@@ -21,7 +25,7 @@ exp.saveDir = fullfile(exp.folderName, exp.lineName, exp.date);
 matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
 if ~exist(exp.saveDir,'dir')
     mkdir(exp.saveDir);
-end
+end 
 while exist(fullfile(exp.saveDir, matSaveFile))
     exp.number = exp.number + 1;
     matSaveFile = [exp.date '_' exp.name '_' num2str(exp.number) '.mat'];
@@ -33,7 +37,7 @@ trialDuration = 15;
 % olfCh = 0;           % Indexing for digital outputs starts at 0. NOTE: MUST EDIT get_channel_names.m
 nOlfCh = length(olfCh);
 % nReps = 1;
-stimType = 'Kathy';
+stimType = 'single';
 
 switch stimType
     case 'Kathy'
@@ -58,7 +62,7 @@ switch stimType
         odorSignal = [zeros(5 * sampRate, 1); repmat(impulse{1}, 60, 1); zeros(5 * sampRate, 1)];
         iti = 20;
     case 'single'
-        impulse{1} = [zeros((2.25 * sampRate),1); zeros((1 * sampRate),1)*1; zeros((3.75 * sampRate),1)];
+        impulse{1} = [zeros((1.75 * sampRate),1); ones((2.5 * sampRate),1)*1; zeros((3.75 * sampRate),1)];
         odorSignal = impulse{1};
         iti = 5;
 end
@@ -66,7 +70,8 @@ end
 conditions = 1:(nOlfCh * size(odorSignal, 2)); % Gives each condition type a unique ID
 conditions = repmat(conditions',nReps,1); % Repeats those IDs by the numebr of trials
 
-randTrials = repmat([1 2 3], 1, nReps);
+randTrials = ones(nReps,1);
+% randTrials = repmat([1 2 3], 1, nReps);
 % randTrials = randsample(conditions, length(conditions)); % Randomizes conditions
 % load('Z:\Data\recordings\LN_dynamics\NP1227-gal4\2016-12-17\2016-12-17_2-hep_10^-1_randTrials.mat');
 % daqInfo = struct;

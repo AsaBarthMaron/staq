@@ -10,7 +10,7 @@ p.addOptional('data',0);
 
 p.parse(varargin{:});
 data = p.Results.data;
-mode = p.Results.mode;
+mode = p.Results.mode; 
 
 [~, name2num] = get_channel_identities;
 modeCh = name2num.ai('Mode');

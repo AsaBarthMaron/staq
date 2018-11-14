@@ -28,7 +28,7 @@ numVal = {[1, 9];
 % ai{14} = 'Mode';            % Amplifier mode
 % ai{15} = 'Stimulus output';
 
-do{1} = '590-605nm light';
+do{1} = '470nm light (EGFP)';
 do{2} = 'blank';
 do{3} = 'paraffin oil 1';
 do{4} = '2-heptanone, 10^-^8';

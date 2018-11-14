@@ -46,7 +46,7 @@ odorBlock = ((odorBlock/5) * max(patchTrace(:,1))) + (0.05 * max(patchTrace(:,1)
 clf
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,1)/100) * 1e3))
 hold on
-plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,2)/100) * 1e3))
+% plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,2)/100) * 1e3))
 
 % a = ((patchTrace/100)/510e6);
 
