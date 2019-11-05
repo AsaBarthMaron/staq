@@ -1,4 +1,4 @@
-function [in, daqInfo] = odor_trial(odorSignal, odorChannel,sampRate)
+function [in, daqInfo] = odor_trial(odorSignal, odorChannel,sampRate, ledSignal)
 % Quick and dirty code to acquire patch clamp data while presenting odor
 % stimulations
 
@@ -19,8 +19,8 @@ for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai(iAI);
     aI(iAI).TerminalConfig = 'SingleEnded';
 end
-% aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for valve1 (odor carrier)
-% aO.Name = 'Shutter Signal';
+aO = niIO.addAnalogOutputChannel('Dev2','ao0', 'Voltage'); % Signal for valve1 (odor carrier)
+aO.Name = 'LED Signal';
 dO = niIO.addDigitalChannel(devID, {['Port0/Line0']}, 'OutputOnly'); % Signal for valve 3 (odor stream)
 dO.Name = 'Odor valve cmd';
 
@@ -30,18 +30,24 @@ dO.Name = 'Odor valve cmd';
 
 
 
-niIO.queueOutputData(odorSignal);
-% niIO.queueOutputData([odorSignal*5]); 
+% niIO.queueOutputData(odorSignal);
+niIO.queueOutputData([ledSignal*5 odorSignal]); 
 in = niIO.startForeground; 
 %--------------------------------------------------------------------------
 %-Plot data--------------------------------------------
 %--------------------------------------------------------------------------
 
-patchTrace(:,1) = in(:, 3);
+patchCh = 3;
+patchTrace(:,1) = in(:, patchCh);
 patchTrace(:,2) = in(:, 11);
 odorBlock = odorSignal;
 odorBlock(odorSignal == 0) = NaN;
 odorBlock = ((odorBlock/5) * max(patchTrace(:,1))) + (0.05 * max(patchTrace(:,1)));
+
+ledBlock = ledSignal;
+ledBlock(ledSignal == 0) = NaN;
+ledBlock = ((ledBlock/5) * max(patchTrace(:,1))) + (0.05 * max(patchTrace(:,1)));
+
 
 clf
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ((patchTrace(:,1)/100) * 1e3))
@@ -56,6 +62,7 @@ hold on
 % plot((1/niIO.Rate):(1/niIO.Rate):trialLength, medfilt1(patchTrace/0.002, 500))
 % plot((1/niIO.Rate):(1/niIO.Rate):trialLength, medfilt1(a, 500))
 plot((1/niIO.Rate):(1/niIO.Rate):trialLength, odorBlock, 'k', 'linewidth', 5);
+plot((1/niIO.Rate):(1/niIO.Rate):trialLength, ledBlock + 1, 'b', 'linewidth', 5);
 % clf
 % plot(downsample((patchTrace*10), 10))
 % hold on
@@ -66,6 +73,8 @@ xlabel('Seconds')
 ylabel('Membrane voltage (Vm)')
 % ylabel('pA')
 title(chNames.do(odorChannel + 1))
+% ylim([20 60])
+ylim([-65 5])
 
 daqInfo.daqRate     = niIO.Rate;
 daqInfo.daqChIDs    = {niIO.Channels(:).ID};
