@@ -6,15 +6,12 @@ clear
 % label = 'Vclamp_cell'; 
 
 % label = 'Iclamp_seal';
+% label = 'Iclamp_zero'; 
 % label = 'Iclamp_fast_whole_cell_current_step';
 label = 'Iclamp_normal_whole_cell_current_step';
-% label = 'Iclamp_zero'; 
 
-% exp.lineName  = 'NP1227-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName  = 'R24C12-gal4_X_UAS-CsChrimson-mVenus';
-% exp.lineName  = 'R78F09-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-exp.lineName  = 'R78F09-Gal4_UAS_CsChrimson R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName = 'R78F09-Gal4';
+% Line name & experiment #
+exp.lineName  = 'R78F09-Gal4_GFP R60F02-LexA_Chrimson_LN';
 exp.number = 1; % Number per day
 
 trialLength = 5;
@@ -35,7 +32,7 @@ if ~exist(exp.saveDir,'dir')
 end
 %% Run trial
 patchCh = 3;
-pA = -35;
+pA = -40;
 [spacer_data, spacer_daqInfo] = spacer_trial(trialLength, pA, sampRate);
 %% Analyze data
 switch label
@@ -52,13 +49,9 @@ end
 
 
 clf
-% plot(scale_200B_data(spacer_data))
 d = scale_200B_data(spacer_data);
-plot(d(:,1))
+plot((1/sampRate):(1/sampRate):trialLength, d(:,1))
 hold on
-% plot(spacer_data(:,11) / 100 * 1e3)
-% plot(scale_200B_data(spacer_data(:,9:15)))
-% plot((spacer_data(:,3) /100 * 1e3))
-% pipetteResistanceCalc(spacer_data(:,patchCh)) 
-% accessResistanceCalc(spacer_data(:,3)/10, 10e3) 
+hold on
+
 save(fullfile(exp.saveDir, matSaveFile))
