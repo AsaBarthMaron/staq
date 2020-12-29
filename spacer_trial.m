@@ -25,7 +25,7 @@ aO.Name = 'External command';
 aO = niIO.addAnalogOutputChannel('Dev1','ao1', 'Voltage'); % Signal for external command
 aO.Name = 'External command';
 
-pA = -35;
+pA = -40;
 % commandMag = 0; 
 commandMag = 0.5e-3 * pA; % Volts/pA (given 100x gain) * pA
 % commandMag = -1; 

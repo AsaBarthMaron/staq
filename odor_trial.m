@@ -24,14 +24,16 @@ aO.Name = 'LED Signal';
 dO = niIO.addDigitalChannel(devID, {['Port0/Line0']}, 'OutputOnly'); % Signal for valve 3 (odor stream)
 dO.Name = 'Odor valve cmd';
 
-% shutterSignal = [zeros((2 * sampRate),1); ones((0.5 * sampRate),1)*5; zeros((4.5 * sampRate),1)];
-% shutterSignal = [zeros((3 * sampRate),1); ones((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
-% shutterSignal = [zeros((3 * sampRate),1); zeros((4 * sampRate),1)*5; zeros((3 * sampRate),1)];
+aO_ext = niIO.addAnalogOutputChannel('Dev1','ao0', 'Voltage'); % Signal for external command
+aO.Name = 'External command';
 
+pA = -40;
+commandMag = 0.5e-3 * pA; % Volts/pA (given 100x gain) * pA
+extCommand = [zeros(2.25*sampRate,1); ones(0.75*sampRate, 1); zeros(3.5 *sampRate,1)];
+extCommand = extCommand * commandMag;
 
-
-% niIO.queueOutputData(odorSignal);
-niIO.queueOutputData([ledSignal*5 odorSignal]); 
+niIO.queueOutputData([ledSignal*5 odorSignal extCommand]);
+% niIO.queueOutputData([ledSignal*5 odorSignal]); 
 in = niIO.startForeground; 
 %--------------------------------------------------------------------------
 %-Plot data--------------------------------------------
@@ -73,7 +75,7 @@ xlabel('Seconds')
 ylabel('Membrane voltage (Vm)')
 % ylabel('pA')
 title(chNames.do(odorChannel + 1))
-% ylim([20 60])
+% ylim([0 80])
 ylim([-65 5])
 
 daqInfo.daqRate     = niIO.Rate;
