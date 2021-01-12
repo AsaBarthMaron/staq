@@ -7,15 +7,15 @@ clear
 
 % label = 'Iclamp_seal';
 % label = 'Iclamp_zero'; 
-% label = 'Iclamp_fast_whole_cell_current_step';
-label = 'Iclamp_normal_whole_cell_current_step';
+label = 'Iclamp_fast_whole_cell_current_step';
+% label = 'Iclamp_normal_whole_cell_current_step';
 
 % Line name & experiment #
 exp.lineName  = 'R78F09-Gal4_GFP R60F02-LexA_Chrimson_LN';
 exp.number = 1; % Number per day
 
 trialLength = 5;
-if strcmp(label, 'Vclamp_seal') || strcmp(label, 'Vclamp_cell')
+if strcmp(label, 'Vclamp_seal') || strcmp(label, 'Vclamp_cell')|| strcmp(label, 'Vclamp_seal_spikes')
     sampRate = 1e5;
 else
     sampRate = 1e4;

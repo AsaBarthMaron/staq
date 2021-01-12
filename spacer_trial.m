@@ -13,7 +13,8 @@ devID = 'Dev1';
 niIO.Rate = sampRate;           % Sampling rate in Hz
 niIO.DurationInSeconds = trialLength;
 
-aI = niIO.addAnalogInputChannel(devID, [1:15],'Voltage');
+% aI = niIO.addAnalogInputChannel(devID, [1:15],'Voltage');
+aI = niIO.addAnalogInputChannel(devID, [1:7],'Voltage');
 [chNames, ~] = get_channel_identities;
 for iAI = 1:length(chNames.ai)
     aI(iAI).Name = chNames.ai(iAI);
@@ -40,7 +41,7 @@ in = niIO.startForeground;
 
 %% Calculate input resistance
 Rinput(1) = ((median(in(:,3)) - mean(in(0.75*sampRate:(1*sampRate)-1,3))) /100)/(abs(pA) * 1e-12);
-Rinput(2) = ((median(in(:,11)) - mean(in(0.75*sampRate:(1*sampRate)-1,11))) /100)/(abs(pA) * 1e-12);
+% Rinput(2) = ((median(in(:,11)) - mean(in(0.75*sampRate:(1*sampRate)-1,11))) /100)/(abs(pA) * 1e-12);
 
 % Rinput = (20e-3)/((median(in(:,3)) - mean(in(0.75*sampRate:(1*sampRate)-1,3))) /20);
 %--------------------------------------------------------------------------

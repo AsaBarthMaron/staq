@@ -53,20 +53,8 @@ for iCycle = 1:length(rising)
     step(:, iCycle) = data(iStepStart(iCycle):iStepStop(iCycle));
 end
 
-% Throw out baseline & step trials where variance is too high, i.e., when
-% there may be spiking or other non-stationary behavior.
-baselineVar = var(baseline);
-stepVar = var(step);
-iDiscard = baselineVar > (3 * std(baselineVar));   % This doesn't really 
-                                                   % quite make sense since
-                                                   % baselineVar is NOT
-                                                   % normally distributed
-                                                   % at all. But it's a hack
-iDiscard(stepVar > (3 * std(stepVar))) = 1;
-baseline(:, iDiscard) = [];
-baseline = mean(baseline)';
-step(:, iDiscard) = [];
-step = mean(step)';
+baseline = mean(baseline, 1)';
+step = mean(step, 1)';
 
 % Calculate seal current 
 sealCurrent = step - baseline;

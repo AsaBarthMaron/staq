@@ -2,31 +2,19 @@ function random_interleaved_trials(olfCh, nReps)
 %--------------------------------------------------------------------------
 % Edit for each animal/experiment change
 %--------------------------------------------------------------------------
-% exp.lineName  = 'R24C12-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName  = 'R24C12-gal4_X_UAS-CsChrimson-mVenus';
-% exp.lineName  = 'NP1227-gal4_X_20x-UAS-GtACR1';
-% exp.lineName  = 'NP1227-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName  = 'NP1227-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName  = 'R78F09-Gal4_UAS_CsChrimson R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName  = 'R67B06-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
 exp.lineName  = 'R78F09-Gal4_GFP R60F02-LexA_Chrimson_LN';
-% exp.lineName  = 'R78F09-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
 
-% exp.lineName  = 'R78F09-Gal4_ACR1 R26A01-LexA_LexAop-mCD8-GFP_PN';
-% exp.lineName = 'R78F09-Gal4';
-
-% exp.lineName  = 'R24C12-gal4_X_20x-UAS-GtACR1';
-% exp.lineName  = 'R24C12-gal4_X_20x-UAS-GtACR1';
 
 % exp.name = 'Var_freq_stim__farnesol_10^-5_8s_490_LED_pulse_same_waveform_20p_ND25_ND3';
 % exp.name = 'Var_freq_stim_2-hep_10^-2_8s_490_LED_pulse_100p_ND25_ND3';
 % % exp.name = 'Var_freq_stim__2-hep_10^-1';
-% exp.name = '1s_2-hep_10^-2_1s_490_LED_pulse_100p';
-% exp.name = '1s_PO_old_valve';
+% exp.name = '1s_2-hep_10^-4_2s_490_LED_pulse_100p_50uM_methysergide';
+% exp.name = '1s_PO';
+% exp.name = '1s_2-hep_10^-2_Iclamp_fast';
 % exp.name = 'pulse_train_490_LED_pulse_100p_ND3_+1uM_TTX_VClamp_0mV';
 % exp.name = '1s_490_LED_pulse_100p_1uM_TTX_Vclamp_-70mV';
-exp.name = '2s_490_LED_pulse_100p';
-% exp.name = '2s_490_LED_pulse_100p_ND25_ND3';
+% exp.name = '2s_490_LED_pulse_100p_depol_step';
+exp.name = '2s_490_LED_pulse_100p_50uM_methysergide';
 % exp.name = '1s_565_LED_pulse_10p_ND25_ND3';
 % exp.name = '1s_2-hep_10^-2_slightly_dep';
 
@@ -78,18 +66,11 @@ switch stimType
     impulse{1} = [ones((0.02 * sampRate),1)*1; zeros((0.08 * sampRate),1)];
     impulse{2} = [ones((0.2 * sampRate),1)*1; zeros((0.38 * sampRate),1)];
     impulse{3} = [ones((2 * sampRate),1)*1; zeros((1.58 * sampRate),1)];
-    % 
-    % impulse{1} = [zeros((0.02 * sampRate),1)*1; zeros((0.08 * sampRate),1)];
-    % impulse{2} = [zeros((0.2 * sampRate),1)*1; zeros((0.38 * sampRate),1)];
-    % impulse{3} = [zeros((2 * sampRate),1)*1; zeros((1.58 * sampRate),1)];
-
+  
     odorSignal(:,1) = [zeros(2 * sampRate, 1); repmat(impulse{1}, 60, 1); zeros(3 * sampRate, 1)];
     odorSignal(:,2) = [zeros(2 * sampRate, 1);  repmat(impulse{2}, 10,1); zeros(3.2 * sampRate, 1)];
     odorSignal(:,3) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 2, 1); zeros(ceil(1.84 * sampRate), 1)];
-%     odorSignal(:,1) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 2, 1)];
-%     odorSignal(:,2) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 2, 1)];
-%     odorSignal(:,3) = [zeros(2 * sampRate, 1);   repmat(impulse{3}, 2, 1)];
-%     
+%  
     ledSignal = zeros(length(odorSignal), 1);
     iti = 5;
     case 'Emre'
@@ -98,14 +79,14 @@ switch stimType
         odorSignal = zeros(length(ledSignal), 1);
         iti = 30;
     case 'light+odor'
-        ledSignal = [zeros((1.25 * sampRate),1); repmat([ones(6,1); ones(4,1)], 2e3, 1); zeros((3.25 * sampRate),1)];
-        odorSignal = [zeros((1.75 * sampRate),1); repmat([ones(6,1); ones(4,1)], 1e3, 1); zeros((3.75 * sampRate),1)];
+        ledSignal = [zeros((1.25 * sampRate),1); ones(2 * sampRate, 1); zeros((3.25 * sampRate),1)];
+        odorSignal = [zeros((1.75 * sampRate),1); ones(1 * sampRate, 1); zeros((3.75 * sampRate),1)];
 %         ledSignal = [repmat([ones(6,1); ones(4,1)], 2e3, 1); zeros((4.75 * sampRate),1)];
 %         odorSignal = [zeros((2 * sampRate),1); repmat([ones(6,1); ones(4,1)], 1e3, 1); zeros((3.75 * sampRate),1)];
         iti = 5;
 %         odorSignal(odorSignal ~= 0) = 0;
 %         ledSignal = ledSignal * 0.50;   
-        ledSignal = odorSignal;
+%         ledSignal = odorSignal;
     case 'light+kathy'
 %         impulse{1} = [ones((0.02 * sampRate),1)*1; zeros((0.08 * sampRate),1)];
         impulse{1} = [ones((0.1 * sampRate),1)*1; zeros((0.19 * sampRate),1)];
